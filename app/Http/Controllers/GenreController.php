@@ -12,8 +12,10 @@ class GenreController extends Controller
      */
     public function index()
     {
-        $authors = Genre::all();  
-        return view('author.index', ['authors'=> $authors]);
+ 
+        return view('genre.index', [
+            'genres'=> Genre::paginate(10),
+        ]);
 
     }
 
@@ -22,7 +24,7 @@ class GenreController extends Controller
      */
     public function create()
     {
-        //
+        return view('genre.create');
     }
 
     /**
@@ -30,7 +32,11 @@ class GenreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $valid = $request->validate([
+            'name'=>'required'
+        ]);
+        Genre::create($valid);
+        return redirect()->route('genres.index')->with('success','Genre Succesfully Created');
     }
 
     /**
@@ -38,23 +44,27 @@ class GenreController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('genre.show', ['genre'=>Genre::find($id)]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Genre $genre)
     {
-        //
+        return view('genre.edit',  compact('genre'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Genre $genre)
     {
-        //
+        $valid = $request->validate([
+            'name'=>'required'
+        ]);
+        $genre->update($valid);
+        return redirect()->route('genres.index')->with('success','User updated successfully');
     }
 
     /**
