@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
+use App\Models\Book;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -11,7 +13,8 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        //
+        $reviews = Review::paginate(10);
+        return view('review.index', compact('reviews'));
     }
 
     /**
@@ -19,7 +22,8 @@ class ReviewController extends Controller
      */
     public function create()
     {
-        //
+        $books = Book::all();
+        return view('review.create', compact('books'));
     }
 
     /**
@@ -27,38 +31,56 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $valid = $request->validate([
+            'book_id' => 'required|exists:books,id',
+            'content' => 'required',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+        Review::create($valid);
+        return redirect()->route('reviews.index')->with('success', 'Review Successfully Created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $review = Review::findOrFail($id);
+        return view('review.show', compact('review'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $review = Review::findOrFail($id);
+        $books = Book::all();
+        return view('review.edit', compact('review', 'books'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $valid = $request->validate([
+            'book_id' => 'required|exists:books,id',
+            'content' => 'required',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+        $review = Review::findOrFail($id);
+        $review->update($valid);
+        return redirect()->route('reviews.index')->with('success', 'Review updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $review = Review::findOrFail($id);
+        $review->delete();
+        return redirect()->route('reviews.index')->with('success', 'Review deleted successfully');
     }
 }

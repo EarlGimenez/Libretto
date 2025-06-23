@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Author;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -12,7 +14,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::with('author')->get() ;
+        $books = Book::with('author')->paginate(10);
         return view('book.index', ['books'=> $books]);
     }
 
@@ -21,7 +23,9 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        $authors = Author::all();
+        $genres = Genre::all();
+        return view('book.create', compact('authors', 'genres'));
     }
 
     /**
@@ -29,38 +33,63 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $valid = $request->validate([
+            'title' => 'required',
+            'author_id' => 'required|exists:authors,id',
+        ]);
+        $book = Book::create($valid);
+        if ($request->has('genres')) {
+            $book->genres()->sync($request->input('genres'));
+        }
+        return redirect()->route('books.index')->with('success', 'Book Successfully Created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $book = Book::with('author', 'genres', 'reviews')->findOrFail($id);
+        return view('book.show', compact('book'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $book = Book::with('genres')->findOrFail($id);
+        $authors = Author::all();
+        $genres = Genre::all();
+        return view('book.edit', compact('book', 'authors', 'genres'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $valid = $request->validate([
+            'title' => 'required',
+            'author_id' => 'required|exists:authors,id',
+        ]);
+        $book = Book::findOrFail($id);
+        $book->update($valid);
+        if ($request->has('genres')) {
+            $book->genres()->sync($request->input('genres'));
+        } else {
+            $book->genres()->sync([]);
+        }
+        return redirect()->route('books.index')->with('success', 'Book updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $book = Book::findOrFail($id);
+        $book->delete();
+        return redirect()->route('books.index')->with('success', 'Book deleted successfully');
     }
 }

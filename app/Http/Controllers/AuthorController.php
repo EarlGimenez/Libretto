@@ -11,9 +11,10 @@ class AuthorController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $authors = Author::all();  
-        return view('author.index', ['authors'=> $authors]);
+    { 
+        return view('author.index', [
+            'authors' => Author::paginate(10),
+        ]);
     }
 
     /**
@@ -21,7 +22,7 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        return view('');
+        return view('author.create');
     }
 
     /**
@@ -29,38 +30,51 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $valid = $request->validate([
+            'name' => 'required',
+        ]);
+        Author::create($valid);
+        return redirect()->route('authors.index')->with('success', 'Author Successfully Created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $author = Author::findOrFail($id);
+        return view('author.show', compact('author'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $author = Author::findOrFail($id);
+        return view('author.edit', compact('author'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $valid = $request->validate([
+            'name' => 'required',
+        ]);
+        $author = Author::findOrFail($id);
+        $author->update($valid);
+        return redirect()->route('authors.index')->with('success', 'Author updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $author = Author::findOrFail($id);
+        $author->delete();
+        return redirect()->route('authors.index')->with('success', 'Author deleted successfully');
     }
 }
