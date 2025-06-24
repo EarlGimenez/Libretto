@@ -13,7 +13,7 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        $reviews = Review::paginate(10);
+        $reviews = Review::with(['book.author'])->paginate(10);
         return view('review.index', compact('reviews'));
     }
 
@@ -32,6 +32,7 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $valid = $request->validate([
+            'id' => 'required|unique:reviews,id',
             'book_id' => 'required|exists:books,id',
             'content' => 'required',
             'rating' => 'required|integer|min:1|max:5',
@@ -45,7 +46,7 @@ class ReviewController extends Controller
      */
     public function show($id)
     {
-        $review = Review::findOrFail($id);
+        $review = Review::with(['book.author'])->findOrFail($id);
         return view('review.show', compact('review'));
     }
 

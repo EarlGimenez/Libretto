@@ -8,6 +8,10 @@
             @csrf
             @method('PUT')
             <div class="mb-3">
+                <label for="id" class="form-label">Author ID</label>
+                <input type="number" id="id" class="form-control" value="{{ $author->id }}" disabled>
+            </div>
+            <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ $author->name }}" required>
                 @if(isset($error))

@@ -8,6 +8,10 @@
             @csrf
             @method('PUT')
             <div class="mb-3">
+                <label for="id" class="form-label">Book ID</label>
+                <input type="number" id="id" class="form-control" value="{{ $book->id }}" disabled>
+            </div>
+            <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" name="title" id="title" class="form-control" value="{{ $book->title }}" required>
             </div>
@@ -20,13 +24,15 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Genres</label><br>
-                @foreach($genres as $genre)
-                    <div class="form-check">
-                        <input type="checkbox" name="genres[]" value="{{ $genre->id }}" class="form-check-input" id="genre-{{ $genre->id }}" @if($book->genres->contains($genre->id)) checked @endif>
-                        <label class="form-check-label" for="genre-{{ $genre->id }}">{{ $genre->name }}</label>
-                    </div>
-                @endforeach
+                <label for="genres" class="form-label">Genres</label>
+                <select name="genres[]" id="genres" class="form-select" multiple size="5" required>
+                    @foreach($genres as $genre)
+                        <option value="{{ $genre->id }}" {{ $book->genres->contains($genre->id) ? 'selected' : '' }}>
+                            {{ $genre->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <div class="form-text">Hold Ctrl (Windows) or Command (Mac) to select multiple genres</div>
             </div>
             @if(isset($error))
                 <div class="text-danger">{{ $message }}</div>

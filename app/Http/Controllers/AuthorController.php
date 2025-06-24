@@ -31,6 +31,7 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         $valid = $request->validate([
+            'id' => 'required|unique:authors,id',
             'name' => 'required',
         ]);
         Author::create($valid);
@@ -42,7 +43,7 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        $author = Author::findOrFail($id);
+        $author = Author::with('books')->findOrFail($id);
         return view('author.show', compact('author'));
     }
 

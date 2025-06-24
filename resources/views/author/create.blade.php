@@ -7,6 +7,13 @@
         <form action="{{ route('authors.store') }}" method="post" class="needs-validation" novalidate>
             @csrf
             <div class="mb-3">
+                <label for="id" class="form-label">Author ID</label>
+                <input type="number" name="id" id="id" class="form-control" required>
+                @if(isset($error))
+                    <div class="text-danger">{{ $message }}</div>
+                @endif
+            </div>
+            <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" name="name" id="name" class="form-control" required>
                 @if(isset($error))

@@ -16,6 +16,7 @@
                         <th>Book ID</th>
                         <th>Book Title</th>
                         <th>Book Author</th>
+                        <th>Genres</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -25,6 +26,11 @@
                         <td>{{ $book->id }}</td>
                         <td>{{ $book->title }}</td>
                         <td>{{ $book->author->name }}</td>
+                        <td>
+                            @foreach($book->genres as $genre)
+                                <span class="badge bg-secondary me-1">{{ $genre->name }}</span>
+                            @endforeach
+                        </td>
                         <td>
                             <a href="{{ route('books.show', $book->id) }}" class="btn btn-info btn-sm">Show</a>
                             <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm">Edit</a>

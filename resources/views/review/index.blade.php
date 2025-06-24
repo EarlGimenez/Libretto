@@ -14,7 +14,8 @@
                 <thead>
                     <tr>
                         <th>Review ID</th>
-                        <th>Content</th>
+                        <th>Book</th>
+                        <th style="width: 40%">Content</th>
                         <th>Rating</th>
                         <th>Actions</th>
                     </tr>
@@ -23,7 +24,8 @@
                     @foreach($reviews as $review)
                     <tr>
                         <td>{{ $review->id }}</td>
-                        <td>{{ $review->content }}</td>
+                        <td>{{ $review->book->title }}</td>
+                        <td><div style="max-width: 400px; overflow-wrap: break-word;">{{ $review->content }}</div></td>
                         <td>{{ $review->rating }}</td>
                         <td>
                             <a href="{{ route('reviews.show', $review->id) }}" class="btn btn-info btn-sm">Show</a>

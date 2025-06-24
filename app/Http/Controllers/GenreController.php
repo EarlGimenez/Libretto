@@ -33,6 +33,7 @@ class GenreController extends Controller
     public function store(Request $request)
     {
         $valid = $request->validate([
+            'id' => 'required|unique:genres,id',
             'name'=>'required'
         ]);
         Genre::create($valid);
@@ -44,7 +45,8 @@ class GenreController extends Controller
      */
     public function show(string $id)
     {
-        return view('genre.show', ['genre'=>Genre::find($id)]);
+        $genre = Genre::with(['books.author'])->findOrFail($id);
+        return view('genre.show', compact('genre'));
     }
 
     /**

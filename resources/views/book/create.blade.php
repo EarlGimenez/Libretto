@@ -19,13 +19,13 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Genres</label><br>
-                @foreach($genres as $genre)
-                    <div class="form-check">
-                        <input type="checkbox" name="genres[]" value="{{ $genre->id }}" class="form-check-input" id="genre-{{ $genre->id }}">
-                        <label class="form-check-label" for="genre-{{ $genre->id }}">{{ $genre->name }}</label>
-                    </div>
-                @endforeach
+                <label for="genres" class="form-label">Genres</label>
+                <select name="genres[]" id="genres" class="form-select" multiple size="5" required>
+                    @foreach($genres as $genre)
+                        <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                    @endforeach
+                </select>
+                <div class="form-text">Hold Ctrl (Windows) or Command (Mac) to select multiple genres</div>
             </div>
             @if(isset($error))
                 <div class="text-danger">{{ $message }}</div>
