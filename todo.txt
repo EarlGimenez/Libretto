@@ -1,0 +1,23 @@
+///App - logout needs to be a button
+
+Author
+create page - user can define the author id
+show page - needs to be table, show books
+edit page - needs to have id but not touchable
+
+Genre
+create page - user can define the genre id
+show page - needs to be table
+edit page - needs to have id but not touchable
+
+Reviews
+create - user can define the review id
+index - content should have a max width, book associated book 
+show - needs to be table, add associated book
+edit - cant edit, add associated book with dropdown
+
+Books
+index - show genre
+create - genre needs to be a multiple choice dropdown
+show - needs to be table form
+edit - needs to have id but not touchable, genere needs multiple dropdown

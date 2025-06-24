@@ -37,7 +37,7 @@ class ReviewController extends Controller
             'rating' => 'required|integer|min:1|max:5',
         ]);
         Review::create($valid);
-        return redirect()->route('reviews.index')->with('success', 'Review Successfully Created');
+        return redirect()->back()->with('success', 'Review Successfully Created');
     }
 
     /**
