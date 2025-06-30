@@ -3,6 +3,9 @@
 @section('content')
     <div class="container">
         <h1 class="my-4">Create a New Review</h1>
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
         <a href="{{ route('reviews.index') }}" class="btn btn-secondary mb-3">Go back to list</a>
         <form action="{{ route('reviews.store') }}" method="post" class="needs-validation" novalidate>
             @csrf
