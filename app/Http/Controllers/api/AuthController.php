@@ -42,7 +42,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             // 'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8',
         ]);
 
         $user = User::create([
@@ -51,9 +51,8 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        $token = $user->createToken('API Token')->plainTextToken;
 
-        return response()->json(['token' => $token], 201);
+        return response()->json(['Message' => "User Created Succesfully"], 201);
     }
 
     public function logout(Request $request)
