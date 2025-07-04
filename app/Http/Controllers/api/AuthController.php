@@ -24,13 +24,14 @@ class AuthController extends Controller
         $existingToken = auth()->user()->tokens()->where('name', 'API Token')->first();
 
         if($existingToken) {
-            return response()->json(['Message' => "You already have an API token. Please delete it before creating a new one."]);
+            if ($existingToken->expires_at->isPast()) {
+                $existingToken->delete();
+            } else {
+                return response()->json(['Message' => "You already have an API token. Please delete it before creating a new one."]);
+            }
         }
 
         if (!$existingToken || $existingToken->expires_at->isPast()) {
-            if ($existingToken) {
-                $existingToken->delete();
-            }
             $existingToken = auth()->user()->createToken('API Token', ['*'], now()->addDay());
         }
 
