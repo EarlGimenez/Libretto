@@ -10,10 +10,6 @@
         <form action="{{ route('reviews.store') }}" method="post" class="needs-validation" novalidate>
             @csrf
             <div class="mb-3">
-                <label for="id" class="form-label">Review ID</label>
-                <input type="number" name="id" id="id" class="form-control" required>
-            </div>
-            <div class="mb-3">
                 <label for="book_id" class="form-label">Book</label>
                 <select name="book_id" id="book_id" class="form-select" required>
                     <option value="">Select a book</option>
