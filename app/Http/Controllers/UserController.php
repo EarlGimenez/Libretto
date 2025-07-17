@@ -12,7 +12,7 @@ class UserController extends Controller
         $valid = $request->validate([ 
             "name"=> "required",
             "password"=>"required|min:5",
-            "password2"=>"required|confirmed:password2"
+            "password2"=>"required|confirmed:password"
         ]);
 
         User::create([
