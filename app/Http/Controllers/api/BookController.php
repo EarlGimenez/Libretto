@@ -13,7 +13,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        return Book::with('author', 'genres')->get();
+        return Book::with('author', 'genres', 'reviews')->get();
     }
 
     /**
@@ -43,7 +43,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        $book = Book::with('author', 'genres')->find($book->id);
+        $book = Book::with('author', 'genres', 'reviews')->find($book->id);
         if (!$book) {
             return response()->json(['message' => 'Book not found'], 404);
         }

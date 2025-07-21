@@ -22,4 +22,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('authors', AuthorController::class);
     Route::apiResource('books', BookController::class);
     Route::apiResource('reviews', ReviewController::class);
+    Route::get('/reviews/book/{book}', [ReviewController::class, 'getBookByReview']);
 });

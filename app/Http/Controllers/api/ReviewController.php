@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Models\Book;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -73,6 +74,15 @@ class ReviewController extends Controller
         //
         $review->delete();
         return response()->json(null, 204);
+    }
+
+    public function getBookByReview(Book $book)
+    {
+        $book = $book->load('reviews');
+        if (!$book) {
+            return response()->json(['message' => 'Book not found for this review'], 404);
+        }
+        return response()->json($book);
     }
 }
 
